@@ -1,0 +1,36 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int pos[6][1003];
+int a[6][1003];
+int dp[1003];
+int n, k;
+int main(){
+    cin>>n>>k;
+    for(int i=1;i<=k;++i){
+        for(int j=1;j<=n;++j){
+            cin>>a[i][j];
+            pos[i][a[i][j]] = j;
+        }
+    }
+    int ans = 1;
+    dp[n] = 1;
+    for(int i=n-1;i>=1;--i){
+        dp[i] = 1;
+        for(int j=i+1;j<=n;++j){
+            bool check = true;
+            for(int l=1;l<=k;++l){
+                if(pos[l][a[1][i]] > pos[l][a[1][j]]){
+                    check = false;
+                    break;
+                }
+            }
+            if(check){
+                dp[i] = max(dp[i], 1+dp[j]);
+            }
+        }
+        ans = max(ans, dp[i]);
+    }
+    cout<<ans<<endl;
+    return 0;}
